@@ -7,5 +7,16 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipes-list.component.scss'],
 })
 export class RecipesListComponent {
-  recipes: Recipe[] = [];
+  recipes: Recipe[] = [
+    new Recipe(
+      'Test',
+      'Testing recipe',
+      'https://live.staticflickr.com/4407/36472805010_c77f134830_b.jpg'
+    ),
+    new Recipe(
+      'Test11',
+      'Testing recipe222',
+      'https://live.staticflickr.com/4407/36472805010_c77f134830_b.jpg'
+    ),
+  ];
 }
