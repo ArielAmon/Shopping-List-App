@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 })
 export class ShoppingListService {
   ingredientsChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
   private ingredients: Ingredient[] = [
     new Ingredient('Apples', 5),
     new Ingredient('Tomatoes', 10),
@@ -17,9 +18,20 @@ export class ShoppingListService {
     return this.ingredients.slice();
   }
 
+  getIngredient(index: number) {
+    return this.ingredients.slice()[index];
+  }
+
   addIngredient(ingredient: Ingredient) {
-    this.ingredients.push(ingredient);
-    this.ingredientsChanged.next(this.ingredients.slice());
+    debugger;
+    const existingIngredient = this.ingredients.find(
+      (i) => i.name === ingredient.name
+    );
+
+    if (!existingIngredient) {
+      this.ingredients.push(ingredient);
+      this.ingredientsChanged.next(this.ingredients.slice());
+    }
   }
 
   addIngredients(ingredients: Ingredient[]) {
@@ -29,14 +41,22 @@ export class ShoppingListService {
       );
 
       if (existingIndex === -1) {
-        // If the ingredient with the same name doesn't exist, add it
         this.ingredients.push(ingredient);
       } else {
-        // If the ingredient with the same name already exists, update the amount
         this.ingredients[existingIndex].amount += ingredient.amount;
       }
     }
 
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  updateIngredient(index: number, newIngredient: Ingredient) {
+    this.ingredients[index] = newIngredient;
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
     this.ingredientsChanged.next(this.ingredients.slice());
   }
 }
